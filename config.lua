@@ -28,5 +28,5 @@ Config.Gangs = {
     ['vagos'] = vector3(0, 0, 0),
     ['cartel'] = vector3(0, 0, 0),
     ['families'] = vector3(0, 0, 0),
-    ['rooks'] = vector3(22.81, 6472.24, 31.9),
+    ['rooks'] = vector3(22.83, 6472.19, 31.9),
 }
