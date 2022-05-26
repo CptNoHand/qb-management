@@ -184,6 +184,22 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
     exports['qb-menu']:openMenu(MemberMenu)
 end)
 
+--[[
+    Current Aim Styles I use : 
+    `default`
+    `Gang1H`
+    `Hillbilly`
+]]
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+    local PlayerGang = GangInfo
+    local ped = PlayerPedId()
+    if PlayerGang and PlayerGang.name ~= "none" then
+        SetWeaponAnimationOverride(ped, `Gang1H`)
+    elseif PlayerGang and PlayerGang.name == "none" then
+        SetWeaponAnimationOverride(ped, `default`)
+    end
+end)
+
 RegisterNetEvent('qb-gangmenu:client:HireMembers', function()
     local HireMembersMenu = {
         {
