@@ -1,19 +1,31 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local PlayerGang = QBCore.Functions.GetPlayerData().gang
+local PlayerGang = {}
 local shownGangMenu = false
-local DynamicMenuItems = {}
 
 -- UTIL
 local function CloseMenuFullGang()
     exports['qb-menu']:closeMenu()
-    exports['qb-core']:HideText()
     shownGangMenu = false
+end
+
+local function DrawText3DGang(v, text)
+    SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(v, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0 + 0.0125, 0.017 + factor, 0.03, 0, 0, 0, 0)
+    ClearDrawOrigin()
 end
 
 local function comma_valueGang(amount)
     local formatted = amount
     while true do
-        local k
         formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
         if (k == 0) then
             break
@@ -50,82 +62,55 @@ RegisterNetEvent('qb-gangmenu:client:Warbobe', function()
     TriggerEvent('qb-clothing:client:openOutfitMenu')
 end)
 
-local function AddGangMenuItem(data, id)
-    local menuID = id or (#DynamicMenuItems + 1)
-    DynamicMenuItems[menuID] = deepcopy(data)
-    return menuID
-end
-
-exports("AddGangMenuItem", AddGangMenuItem)
-
-local function RemoveGangMenuItem(id)
-    DynamicMenuItems[id] = nil
-end
-
-exports("RemoveGangMenuItem", RemoveGangMenuItem)
-
 RegisterNetEvent('qb-gangmenu:client:OpenMenu', function()
     shownGangMenu = true
     local gangMenu = {
         {
             header = "Gang Management  - " .. string.upper(PlayerGang.label),
-            icon = "fa-solid fa-circle-info",
             isMenuHeader = true,
         },
         {
-            header = "Manage Gang Members",
-            icon = "fa-solid fa-list",
+            header = "📋 Manage Gang Members",
             txt = "Recruit or Fire Gang Members",
             params = {
                 event = "qb-gangmenu:client:ManageGang",
             }
         },
         {
-            header = "Recruit Members",
-            icon = "fa-solid fa-hand-holding",
+            header = "💛 Recruit Members",
             txt = "Hire Gang Members",
             params = {
                 event = "qb-gangmenu:client:HireMembers",
             }
         },
         {
-            header = "Storage Access",
-            icon = "fa-solid fa-box-open",
+            header = "🗄️ Storage Access",
             txt = "Open Gang Stash",
             params = {
                 event = "qb-gangmenu:client:Stash",
             }
         },
         {
-            header = "Outfits",
+            header = "🚪 Outfits",
             txt = "Change Clothes",
-            icon = "fa-solid fa-shirt",
             params = {
                 event = "qb-gangmenu:client:Warbobe",
             }
         },
         {
-            header = "Money Management",
-            icon = "fa-solid fa-sack-dollar",
+            header = "💰 Money Management",
             txt = "Check your Gang Balance",
             params = {
                 event = "qb-gangmenu:client:SocietyMenu",
             }
         },
+        {
+            header = "Exit",
+            params = {
+                event = "qb-menu:closeMenu",
+            }
+        },
     }
-
-    for _, v in pairs(DynamicMenuItems) do
-        gangMenu[#gangMenu + 1] = v
-    end
-
-    gangMenu[#gangMenu + 1] = {
-        header = "Exit",
-        icon = "fa-solid fa-angle-left",
-        params = {
-            event = "qb-menu:closeMenu",
-        }
-    }
-
     exports['qb-menu']:openMenu(gangMenu)
 end)
 
@@ -133,7 +118,6 @@ RegisterNetEvent('qb-gangmenu:client:ManageGang', function()
     local GangMembersMenu = {
         {
             header = "Manage Gang Members - " .. string.upper(PlayerGang.label),
-            icon = "fa-solid fa-circle-info",
             isMenuHeader = true,
         },
     }
@@ -142,7 +126,6 @@ RegisterNetEvent('qb-gangmenu:client:ManageGang', function()
             GangMembersMenu[#GangMembersMenu + 1] = {
                 header = v.name,
                 txt = v.grade.name,
-                icon = "fa-solid fa-circle-user",
                 params = {
                     event = "qb-gangmenu:lient:ManageMember",
                     args = {
@@ -153,8 +136,7 @@ RegisterNetEvent('qb-gangmenu:client:ManageGang', function()
             }
         end
         GangMembersMenu[#GangMembersMenu + 1] = {
-            header = "Return",
-            icon = "fa-solid fa-angle-left",
+            header = "< Return",
             params = {
                 event = "qb-gangmenu:client:OpenMenu",
             }
@@ -168,7 +150,6 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
         {
             header = "Manage " .. data.player.name .. " - " .. string.upper(PlayerGang.label),
             isMenuHeader = true,
-            icon = "fa-solid fa-circle-info",
         },
     }
     for k, v in pairs(QBCore.Shared.Gangs[data.work.name].grades) do
@@ -178,18 +159,16 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
             params = {
                 isServer = true,
                 event = "qb-gangmenu:server:GradeUpdate",
-                icon = "fa-solid fa-file-pen",
                 args = {
                     cid = data.player.empSource,
-                    grade = tonumber(k),
-                    gradename = v.name
+                    degree = tonumber(k),
+                    named = v.name
                 }
             }
         }
     end
     MemberMenu[#MemberMenu + 1] = {
         header = "Fire",
-        icon = "fa-solid fa-user-large-slash",
         params = {
             isServer = true,
             event = "qb-gangmenu:server:FireMember",
@@ -197,8 +176,7 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
         }
     }
     MemberMenu[#MemberMenu + 1] = {
-        header = "Return",
-        icon = "fa-solid fa-angle-left",
+        header = "< Return",
         params = {
             event = "qb-gangmenu:client:ManageGang",
         }
@@ -227,7 +205,6 @@ RegisterNetEvent('qb-gangmenu:client:HireMembers', function()
         {
             header = "Hire Gang Members - " .. string.upper(PlayerGang.label),
             isMenuHeader = true,
-            icon = "fa-solid fa-circle-info",
         },
     }
     QBCore.Functions.TriggerCallback('qb-gangmenu:getplayers', function(players)
@@ -236,7 +213,6 @@ RegisterNetEvent('qb-gangmenu:client:HireMembers', function()
                 HireMembersMenu[#HireMembersMenu + 1] = {
                     header = v.name,
                     txt = "Citizen ID: " .. v.citizenid .. " - ID: " .. v.sourceplayer,
-                    icon = "fa-solid fa-user-check",
                     params = {
                         isServer = true,
                         event = "qb-gangmenu:server:HireMember",
@@ -246,8 +222,7 @@ RegisterNetEvent('qb-gangmenu:client:HireMembers', function()
             end
         end
         HireMembersMenu[#HireMembersMenu + 1] = {
-            header = "Return",
-            icon = "fa-solid fa-angle-left",
+            header = "< Return",
             params = {
                 event = "qb-gangmenu:client:OpenMenu",
             }
@@ -262,11 +237,9 @@ RegisterNetEvent('qb-gangmenu:client:SocietyMenu', function()
             {
                 header = "Balance: $" .. comma_valueGang(cb) .. " - " .. string.upper(PlayerGang.label),
                 isMenuHeader = true,
-                icon = "fa-solid fa-circle-info",
             },
             {
-                header = "Deposit",
-                icon = "fa-solid fa-money-bill-transfer",
+                header = "💸 Deposit",
                 txt = "Deposit Money",
                 params = {
                     event = "qb-gangmenu:client:SocietyDeposit",
@@ -274,8 +247,7 @@ RegisterNetEvent('qb-gangmenu:client:SocietyMenu', function()
                 }
             },
             {
-                header = "Withdraw",
-                icon = "fa-solid fa-money-bill-transfer",
+                header = "💸 Withdraw",
                 txt = "Withdraw Money",
                 params = {
                     event = "qb-gangmenu:client:SocietyWithdraw",
@@ -283,8 +255,7 @@ RegisterNetEvent('qb-gangmenu:client:SocietyMenu', function()
                 }
             },
             {
-                header = "Return",
-                icon = "fa-solid fa-angle-left",
+                header = "< Return",
                 params = {
                     event = "qb-gangmenu:client:OpenMenu",
                 }
@@ -333,73 +304,37 @@ RegisterNetEvent('qb-gangmenu:client:SocietyWithdraw', function(saldoattuale)
 end)
 
 -- MAIN THREAD
-
 CreateThread(function()
-    if Config.UseTarget then
-        for gang, zones in pairs(Config.GangMenuZones) do
-            for index, data in ipairs(zones) do
-                exports['qb-target']:AddBoxZone(gang.."-GangMenu"..index, data.coords, data.length, data.width, {
-                    name = gang.."-GangMenu"..index,
-                    heading = data.heading,
-                    -- debugPoly = true,
-                    minZ = data.minZ,
-                    maxZ = data.maxZ,
-                }, {
-                    options = {
-                        {
-                            type = "client",
-                            event = "qb-gangmenu:client:OpenMenu",
-                            icon = "fas fa-sign-in-alt",
-                            label = "Gang Menu",
-                            canInteract = function() return gang == PlayerGang.name and PlayerGang.isboss end,
-                        },
-                    },
-                    distance = 2.5
-                })
-            end
-        end
-    else
-        while true do
-            local wait = 2500
-            local pos = GetEntityCoords(PlayerPedId())
-            local inRangeGang = false
-            local nearGangmenu = false
-            if PlayerGang then
-                wait = 0
-                for k, menus in pairs(Config.GangMenus) do
-                    for _, coords in ipairs(menus) do
-                        if k == PlayerGang.name and PlayerGang.isboss then
-                            if #(pos - coords) < 5.0 then
-                                inRangeGang = true
-                                if #(pos - coords) <= 1.5 then
-                                    nearGangmenu = true
-                                    if not shownGangMenu then
-                                        exports['qb-core']:DrawText('[E] Open Gang Management', 'left')
-                                    end
-
-                                    if IsControlJustReleased(0, 38) then
-                                        exports['qb-core']:HideText()
-                                        TriggerEvent("qb-gangmenu:client:OpenMenu")
-                                    end
-                                end
-
-                                if not nearGangmenu and shownGangMenu then
-                                    CloseMenuFullGang()
-                                    shownGangMenu = false
-                                end
-                            end
+    while true do
+        local pos = GetEntityCoords(PlayerPedId())
+        local inRangeGang = false
+        local nearGangmenu = false
+        for k, v in pairs(Config.Gangs) do
+            if k == PlayerGang.name and PlayerGang.isboss then
+                if #(pos - v) < 5.0 then
+                    inRangeGang = true
+                    if #(pos - v) <= 1.5 then
+                        if not shownGangMenu then DrawText3DGang(v, "~b~E~w~ - Open Gang Management") end
+                        nearGangmenu = true
+                        if IsControlJustReleased(0, 38) then
+                            TriggerEvent("qb-gangmenu:client:OpenMenu")
                         end
                     end
-                end
-                if not inRangeGang then
-                    Wait(1500)
-                    if shownGangMenu then
+                    
+                    if not nearGangmenu and shownGangMenu then
                         CloseMenuFullGang()
                         shownGangMenu = false
                     end
                 end
             end
-            Wait(wait)
         end
+        if not inRangeGang then
+            Wait(1500)
+            if shownGangMenu then
+                CloseMenuFullGang()
+                shownGangMenu = false
+            end
+        end
+        Wait(5)
     end
 end)
