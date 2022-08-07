@@ -5,6 +5,7 @@ description 'qb-bossmenu'
 version '2.0.0'
 
 client_scripts {
+    'config.lua',
     'client/*.lua'
 }
 
@@ -14,12 +15,8 @@ server_scripts {
 }
 
 server_exports {
-    'AddMoney',
-    'AddGangMoney',
-    'RemoveMoney',
-    'RemoveGangMoney',
     'GetAccount',
-    'GetGangAccount',
+    'GetaccountGang',
 }
 
 lua54 'yes'
