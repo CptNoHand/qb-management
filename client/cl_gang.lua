@@ -89,14 +89,6 @@ RegisterNetEvent('qb-gangmenu:client:OpenMenu', function()
             }
         },
         {
-            header = "Storage Access",
-            icon = "fa-solid fa-box-open",
-            txt = "Open Gang Stash",
-            params = {
-                event = "qb-gangmenu:client:Stash",
-            }
-        },
-        {
             header = "Outfits",
             txt = "Change Clothes",
             icon = "fa-solid fa-shirt",

@@ -7,6 +7,8 @@ Config.BossMenus = {
     ['police'] = {
         vector3(461.45, -986.2, 30.73),
         vector3(-432.8, 6005.78, 37.0),
+        vector3(1824.88, 3672.11, 38.86),
+        vector3(1834.26, 3677.2, 38.87),
     },
     ['ambulance'] = {
         vector3(335.46, -594.52, 43.28),
@@ -26,12 +28,26 @@ Config.BossMenus = {
     ['lscustoms'] = {
         vector3(-338.83, -157.5, 44.59),
     },
+    ['ottos'] = {
+        vector3(798.07, -830.26, 26.34),
+    },
+    ['judge'] = {
+        vector3(-585.58, -211.33, 38.23),
+    },
+    ['lsfd'] = {
+        vector3(1187.31, -1474.36, 34.86),
+    },
+    ['redline'] = {
+        vector3(-605.38, -919.61, 23.89),
+    },
 }
 
 Config.BossMenuZones = {
     ['police'] = {
-        { coords = vector3(461.45, -986.2, 30.73), length = 0.35, width = 0.45, heading = 351.0, minZ = 30.58, maxZ = 30.68 } ,
-        { coords = vector3(-432.8, 6005.78, 37.0), length = 0.35, width = 0.45, heading = 351.0, minZ = 35.58, maxZ = 38.68 } ,
+        { coords = vector3(461.45, -986.2, 30.73), length = 0.35, width = 0.45, heading = 351.0, minZ = 30.58, maxZ = 30.68 },
+        { coords = vector3(-432.8, 6005.78, 37.0), length = 0.35, width = 0.45, heading = 351.0, minZ = 35.58, maxZ = 38.68 },
+        { coords = vector3(1824.88, 3672.11, 38.86), length = 0.35, width = 0.45, heading = 351.0, minZ = 30.58, maxZ = 30.68 },
+        { coords = vector3(1834.26, 3677.2, 38.87), length = 0.35, width = 0.45, heading = 351.0, minZ = 35.58, maxZ = 38.68 },
     },
     ['ambulance'] = {
         { coords = vector3(335.46, -594.52, 43.28), length = 1.2, width = 0.6, heading = 341.0, minZ = 43.13, maxZ = 43.73 },
@@ -50,6 +66,15 @@ Config.BossMenuZones = {
     },
     ['lscustoms'] = {
         { coords = vector3(-338.83, -157.5, 44.59), length = 1.15, width = 2.6, heading = 353.0, minZ = 43.59, maxZ = 45.99 },
+    },
+    ['judge'] = {
+        { coords = vector3(-585.58, -211.33, 38.23), length = 1.15, width = 2.6, heading = 353.0, minZ = 43.59, maxZ = 45.99 },
+    },
+    ['lsfd'] = {
+        { coords = vector3(1187.31, -1474.36, 34.86), length = 1.15, width = 2.6, heading = 353.0, minZ = 43.59, maxZ = 45.99 },
+    },
+    ['redline'] = {
+        { coords = vector3(-605.38, -919.61, 23.89), length = 1.15, width = 2.6, heading = 353.0, minZ = 43.59, maxZ = 45.99 },
     },
 }
 

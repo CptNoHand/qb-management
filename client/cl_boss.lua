@@ -76,14 +76,6 @@ RegisterNetEvent('qb-bossmenu:client:OpenMenu', function()
             }
         },
         {
-            header = "Storage Access",
-            txt = "Open Storage",
-            icon = "fa-solid fa-box-open",
-            params = {
-                event = "qb-bossmenu:client:Stash",
-            }
-        },
-        {
             header = "Outfits",
             txt = "See Saved Outfits",
             icon = "fa-solid fa-shirt",
