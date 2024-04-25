@@ -73,33 +73,33 @@ RegisterNetEvent('qb-gangmenu:client:OpenMenu', function()
             isMenuHeader = true,
         },
         {
-            header = "Manage Gang Members",
+            header = "Verwalte Gangmitglieder",
             icon = "fa-solid fa-list",
-            txt = "Recruit or Fire Gang Members",
+            txt = "Rekrutiere oder feuere Mitglieder",
             params = {
                 event = "qb-gangmenu:client:ManageGang",
             }
         },
         {
-            header = "Recruit Members",
+            header = "Mitglied rekrutieren",
             icon = "fa-solid fa-hand-holding",
-            txt = "Hire Gang Members",
+            txt = "Mitglieder einstellen",
             params = {
                 event = "qb-gangmenu:client:HireMembers",
             }
         },
         {
             header = "Outfits",
-            txt = "Change Clothes",
+            txt = "Outfit wechseln",
             icon = "fa-solid fa-shirt",
             params = {
                 event = "qb-gangmenu:client:Warbobe",
             }
         },
         {
-            header = "Money Management",
+            header = "Geld Management",
             icon = "fa-solid fa-sack-dollar",
-            txt = "Check your Gang Balance",
+            txt = "Check deinen Kontostand",
             params = {
                 event = "qb-gangmenu:client:SocietyMenu",
             }
@@ -111,7 +111,7 @@ RegisterNetEvent('qb-gangmenu:client:OpenMenu', function()
     end
 
     gangMenu[#gangMenu + 1] = {
-        header = "Exit",
+        header = "Verlassen",
         icon = "fa-solid fa-angle-left",
         params = {
             event = "qb-menu:closeMenu",
@@ -124,7 +124,7 @@ end)
 RegisterNetEvent('qb-gangmenu:client:ManageGang', function()
     local GangMembersMenu = {
         {
-            header = "Manage Gang Members - " .. string.upper(PlayerGang.label),
+            header = "Verwalte Gang Mitglieder - " .. string.upper(PlayerGang.label),
             icon = "fa-solid fa-circle-info",
             isMenuHeader = true,
         },
@@ -145,7 +145,7 @@ RegisterNetEvent('qb-gangmenu:client:ManageGang', function()
             }
         end
         GangMembersMenu[#GangMembersMenu + 1] = {
-            header = "Return",
+            header = "Zurück",
             icon = "fa-solid fa-angle-left",
             params = {
                 event = "qb-gangmenu:client:OpenMenu",
@@ -158,7 +158,7 @@ end)
 RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
     local MemberMenu = {
         {
-            header = "Manage " .. data.player.name .. " - " .. string.upper(PlayerGang.label),
+            header = "Verwalten " .. data.player.name .. " - " .. string.upper(PlayerGang.label),
             isMenuHeader = true,
             icon = "fa-solid fa-circle-info",
         },
@@ -166,7 +166,7 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
     for k, v in pairs(QBCore.Shared.Gangs[data.work.name].grades) do
         MemberMenu[#MemberMenu + 1] = {
             header = v.name,
-            txt = "Grade: " .. k,
+            txt = "Rang: " .. k,
             params = {
                 isServer = true,
                 event = "qb-gangmenu:server:GradeUpdate",
@@ -180,7 +180,7 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
         }
     end
     MemberMenu[#MemberMenu + 1] = {
-        header = "Fire",
+        header = "Feuern",
         icon = "fa-solid fa-user-large-slash",
         params = {
             isServer = true,
@@ -189,7 +189,7 @@ RegisterNetEvent('qb-gangmenu:lient:ManageMember', function(data)
         }
     }
     MemberMenu[#MemberMenu + 1] = {
-        header = "Return",
+        header = "Zurück",
         icon = "fa-solid fa-angle-left",
         params = {
             event = "qb-gangmenu:client:ManageGang",
@@ -201,7 +201,7 @@ end)
 RegisterNetEvent('qb-gangmenu:client:HireMembers', function()
     local HireMembersMenu = {
         {
-            header = "Hire Gang Members - " .. string.upper(PlayerGang.label),
+            header = "Rekrutiere Mitglieder - " .. string.upper(PlayerGang.label),
             isMenuHeader = true,
             icon = "fa-solid fa-circle-info",
         },
@@ -222,7 +222,7 @@ RegisterNetEvent('qb-gangmenu:client:HireMembers', function()
             end
         end
         HireMembersMenu[#HireMembersMenu + 1] = {
-            header = "Return",
+            header = "Zurück",
             icon = "fa-solid fa-angle-left",
             params = {
                 event = "qb-gangmenu:client:OpenMenu",
@@ -236,30 +236,30 @@ RegisterNetEvent('qb-gangmenu:client:SocietyMenu', function()
     QBCore.Functions.TriggerCallback('qb-gangmenu:server:GetAccount', function(cb)
         local SocietyMenu = {
             {
-                header = "Balance: $" .. comma_valueGang(cb) .. " - " .. string.upper(PlayerGang.label),
+                header = "Kontostand: $" .. comma_valueGang(cb) .. " - " .. string.upper(PlayerGang.label),
                 isMenuHeader = true,
                 icon = "fa-solid fa-circle-info",
             },
             {
-                header = "Deposit",
+                header = "Einzahlen",
                 icon = "fa-solid fa-money-bill-transfer",
-                txt = "Deposit Money",
+                txt = "Geld einzahlen",
                 params = {
                     event = "qb-gangmenu:client:SocietyDeposit",
                     args = comma_valueGang(cb)
                 }
             },
             {
-                header = "Withdraw",
+                header = "Auszahlen",
                 icon = "fa-solid fa-money-bill-transfer",
-                txt = "Withdraw Money",
+                txt = "Geld auszahlen",
                 params = {
                     event = "qb-gangmenu:client:SocietyWithdraw",
                     args = comma_valueGang(cb)
                 }
             },
             {
-                header = "Return",
+                header = "Zurück",
                 icon = "fa-solid fa-angle-left",
                 params = {
                     event = "qb-gangmenu:client:OpenMenu",
@@ -272,14 +272,14 @@ end)
 
 RegisterNetEvent('qb-gangmenu:client:SocietyDeposit', function(saldoattuale)
     local deposit = exports['qb-input']:ShowInput({
-        header = "Deposit Money <br> Available Balance: $" .. saldoattuale,
-        submitText = "Confirm",
+        header = "Geld einzahlen <br> verfügbarer Betrag: $" .. saldoattuale,
+        submitText = "Bestätigen",
         inputs = {
             {
                 type = 'number',
                 isRequired = true,
                 name = 'amount',
-                text = 'Amount'
+                text = 'Menge'
             }
         }
     })
@@ -291,8 +291,8 @@ end)
 
 RegisterNetEvent('qb-gangmenu:client:SocietyWithdraw', function(saldoattuale)
     local withdraw = exports['qb-input']:ShowInput({
-        header = "Withdraw Money <br> Available Balance: $" .. saldoattuale,
-        submitText = "Confirm",
+        header = "Geld auszahlen <br> verfügbarer Betrag: $" .. saldoattuale,
+        submitText = "Bestätigen",
         inputs = {
             {
                 type = 'number',
@@ -326,7 +326,7 @@ CreateThread(function()
                             type = "client",
                             event = "qb-gangmenu:client:OpenMenu",
                             icon = "fas fa-sign-in-alt",
-                            label = "Gang Menu",
+                            label = "Gang Menü",
                             canInteract = function() return gang == PlayerGang.name and PlayerGang.isboss end,
                         },
                     },
